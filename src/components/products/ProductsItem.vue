@@ -26,7 +26,7 @@ export default defineComponent({
     </p>
     <p class="products-item__descr">{{ product.description }}</p>
     <p class="products-item__price mt-auto">${{ product.price }}</p>
-    <button class="btn">Buy Now</button>
+    <button class="btn products-item__btn">Buy Now</button>
   </li>
 </template>
 
@@ -68,13 +68,7 @@ export default defineComponent({
     font-weight: 300;
   }
 
-  .btn {
-    border-radius: 4px;
-    background: #67c4a7;
-    padding: 8px 19px;
-
-    color: #fff;
-    text-align: center;
+  &__btn {
     font-size: 14px;
     font-weight: 400;
   }
