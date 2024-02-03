@@ -7,43 +7,43 @@ import type { IField } from '../components/forms/fields/types.ts';
 
 export default defineComponent({
   components: {
-    TheForm
+    TheForm,
   },
   data() {
     return {
       toastConfig: {
         isShown: false,
         title: 'Success',
-        text: 'Product successfully added'
+        text: 'Product successfully added',
       },
       formConfig: {
         fields: [
           {
             name: 'title',
             labelText: 'Title',
-            rules: 'required'
+            rules: 'required',
           },
           {
             name: 'price',
             labelText: 'Price',
-            rules: 'required|numeric'
+            rules: 'required|numeric',
           },
           {
             name: 'description',
             labelText: 'Description',
-            rules: 'required'
+            rules: 'required',
           },
           {
             name: 'image',
             labelText: 'Image',
             placeholder: 'Input image url',
-            rules: 'required|url'
+            rules: 'required|url',
           },
-          { name: 'category', labelText: 'Category', rules: 'required' }
+          { name: 'category', labelText: 'Category', rules: 'required' },
         ] as IField[],
         title: 'Add product',
-        btnText: 'Add'
-      }
+        btnText: 'Add',
+      },
     };
   },
   methods: {
@@ -51,7 +51,7 @@ export default defineComponent({
       try {
         const response = await fetch('https://fakestoreapi.com/products', {
           method: 'POST',
-          body: JSON.stringify(values)
+          body: JSON.stringify(values),
         });
         console.log(await response.json());
       } catch (error) {
@@ -71,8 +71,8 @@ export default defineComponent({
       setTimeout(() => {
         this.toastConfig.isShown = false;
       }, 3000);
-    }
-  }
+    },
+  },
 });
 </script>
 
