@@ -4,11 +4,21 @@ import type { PropType } from 'vue';
 
 import type { Product } from '@/types/products';
 
+import { RouterLink } from 'vue-router';
+
 export default defineComponent({
+  components: {
+    RouterLink
+  },
   props: {
     product: {
       type: Object as PropType<Product>,
       required: true
+    }
+  },
+  methods: {
+    addToCart(value: number) {
+      this.$emit('add-to-cart', value);
     }
   }
 });
@@ -19,14 +29,19 @@ export default defineComponent({
     <div class="products-item__image">
       <img :src="product.image" alt="" />
     </div>
-    <p class="products-item__title">{{ product.title }}</p>
+    <RouterLink
+      :to="{ name: 'products.item', params: { id: product.id } }"
+      class="products-item__title"
+    >
+      {{ product.title }}
+    </RouterLink>
     <p class="products-item__category">{{ product.category }}</p>
     <p class="products-item__rating">
       {{ 'Rate: ' + product.rating.rate + ' / Count: ' + product.rating.count }}
     </p>
     <p class="products-item__descr">{{ product.description }}</p>
     <p class="products-item__price mt-auto">${{ product.price }}</p>
-    <button class="btn products-item__btn">Buy Now</button>
+    <button class="btn products-item__btn" @click="addToCart(product.id)">Add to cart</button>
   </li>
 </template>
 

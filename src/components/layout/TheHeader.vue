@@ -1,12 +1,35 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import { RouterLink } from 'vue-router';
+
 export default defineComponent({
+  components: { RouterLink },
+
+  props: {
+    isAuthenticated: {
+      type: Boolean,
+      required: true
+    },
+    cart: {
+      type: Array<{ name: number; count: number }>,
+      required: true
+    }
+  },
   data() {
     return {
       searchText: '',
       timer: null as null | number
     };
+  },
+  computed: {
+    cartCount(): number {
+      let count = 0;
+      for (const item of this.cart) {
+        count += item.count;
+      }
+      return count;
+    }
   },
   watch: {
     searchText(): void {
@@ -15,13 +38,19 @@ export default defineComponent({
       }
 
       this.timer = setTimeout(() => {
-        this.updateSearchResults();
+        this.updateSearchResults(this.searchText);
       }, 300);
     }
   },
   methods: {
-    updateSearchResults(): void {
-      this.$emit('search-change', this.searchText.toLowerCase());
+    updateSearchResults(value: string): void {
+      this.$router.push({ name: 'products', query: { search: value.toLowerCase() } });
+    },
+    logout(): void {
+      this.$emit('logout');
+    },
+    clearCart() {
+      this.$emit('clear-cart');
     }
   }
 });
@@ -30,10 +59,10 @@ export default defineComponent({
 <template>
   <header class="header">
     <div class="container flex justify-between items-center py-4">
-      <div class="header__logo cursor-pointer">Vue Store</div>
+      <RouterLink :to="{ name: 'home' }" class="header__logo cursor-pointer">
+        Vue Store
+      </RouterLink>
       <div class="flex items-center gap-4">
-        <a href="#order" class="header__link">Order</a>
-        <a href="#add-product" class="header__link">Add product</a>
         <form @submit.prevent>
           <input
             type="text"
@@ -42,6 +71,13 @@ export default defineComponent({
             v-model="searchText"
           />
         </form>
+        <RouterLink :to="{ name: 'order' }" class="header__link">Order</RouterLink>
+        <RouterLink :to="{ name: 'products.add' }" class="header__link">Add product</RouterLink>
+        <button class="header__link" @click="clearCart">Cart ({{ cartCount }})</button>
+        <RouterLink v-if="!isAuthenticated" :to="{ name: 'login' }" class="header__link">
+          Login
+        </RouterLink>
+        <button v-else class="header__link" @click="logout">Logout</button>
       </div>
     </div>
   </header>
