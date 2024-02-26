@@ -31,5 +31,6 @@ export default defineConfig({
         'src/types/products.ts',
       ],
     },
+    exclude: ['**/node_modules/**', 'tests/e2e'],
   },
 });
